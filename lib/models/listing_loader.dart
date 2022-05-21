@@ -24,4 +24,9 @@ class ListingLoader extends ChangeNotifier {
     _doneLoading = true;
     notifyListeners();
   }
+
+  void addListing(Directory dir) {
+    listings.add(Listing(dir));
+    notifyListeners();
+  }
 }
