@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class carPage extends StatelessWidget {
@@ -55,15 +57,10 @@ class carPage extends StatelessWidget {
                       Expanded(
                           flex: 3,
                           child: Column(
-                            children: const [
-                              CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                minRadius: 25.0,
-                                child: Icon(
-                                  Icons.fullscreen,
-                                  size: 25.0,
-                                ),
-                              ),
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {},
+                                  child: const Icon(Icons.fullscreen)),
                             ],
                           )),
                     ],
