@@ -1,7 +1,6 @@
-import 'package:car_reels/widgets/reel.dart';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 
-import '../models/listing.dart';
 
 class carPage extends StatelessWidget {
   // This widget is the root of your application.
@@ -34,6 +33,7 @@ class carPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+<<<<<<< HEAD
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
@@ -79,6 +79,43 @@ class carPage extends StatelessWidget {
                             height: 150.0,
                           ),
                         ],
+=======
+                      // Col 1
+                      Expanded(
+                        flex: 3,
+                        child: Column(children: const [
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            minRadius: 25.0,
+                          ),
+                        ]),
+                      ),
+                      // Col 2
+                      Expanded(
+                        flex: 10,
+                        child: Column(children: const []),
+                      ),
+                      // Col 3
+                      Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {},
+                                  child: const Icon(Icons.fullscreen)),
+                            ],
+                          )),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 45,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const <Widget>[
+                      SizedBox(
+                        height: 150.0,
+>>>>>>> 2cc7bcc459ae176d72410ab9583e449b134ed508
                       ),
                     ],
                   ),
