@@ -1,53 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
-class ReelRecorder extends StatefulWidget {
+class ReelRecorder extends ChangeNotifier {
+  late CameraController controller;
   final CameraDescription _camera;
 
-  const ReelRecorder(this._camera);
+  ReelRecorder(this._camera) {
+    _init();
+  }
 
-  @override
-  State<ReelRecorder> createState() => _ReelRecorderState();
-}
+  void _init() async {
+    controller = CameraController(_camera, ResolutionPreset.max);
 
-class _ReelRecorderState extends State<ReelRecorder> {
-  late CameraController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = CameraController(widget._camera, ResolutionPreset.max);
-    _controller.initialize().then((_) {
-      if (!mounted) {
-        return;
+    try {
+      await controller.initialize();
+    } on CameraException catch (e) {
+      switch (e.code) {
+        case 'CameraAccessDenied':
+          print('User denied camera access.');
+          break;
+        default:
+          print('Handle other errors.');
+          break;
       }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            print('User denied camera access.');
-            break;
-          default:
-            print('Handle other errors.');
-            break;
-        }
-      }
-    });
+    }
+
+    notifyListeners();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (!_controller.value.isInitialized) {
-      return Container();
-    }
-    return CameraPreview(_controller);
+  bool initialized() {
+    return controller.value.isInitialized;
+  }
+
+  void startRecording() {
+    controller.startImageStream(
+      (CameraImage image) {
+        print(image.format);
+      },
+    );
+  }
+
+  void stopRecording() {
+    controller.stopImageStream();
   }
 }
