@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../models/listing_loader.dart';
 import '../widgets/reel.dart';
+import 'car.dart';
 
 void main() => runApp(const MainScreen());
 
@@ -67,44 +68,69 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       borderRadius: BorderRadius.all(Radius.circular(25.0)),
                       boxShadow: kElevationToShadow[4],
                     ),
-                    child: Column(
-                      children: [
-                        Container(
-                          clipBehavior: Clip.antiAlias,
-                          alignment: Alignment.center,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(25.0),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ChangeNotifierProvider.value(
+                                  value: context.read<ListingLoader>(),
+                                  child: carPage(
+                                    context
+                                        .read<ListingLoader>()
+                                        .listings[index],
+                                  ),
+                                );
+                              },
                             ),
-                          ),
-                          child: Reel(listingLoader.listings[index]),
-                        ),
-                        const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  listingLoader.listings[index].brand,
-                                  style: Theme.of(context).textTheme.subtitle2,
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              clipBehavior: Clip.antiAlias,
+                              alignment: Alignment.center,
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(25.0),
                                 ),
-                                Text(
-                                  listingLoader.listings[index].model,
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                                Text(
-                                  '\$${listingLoader.listings[index].price}',
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                              ],
+                              ),
+                              child: Reel(listingLoader.listings[index]),
                             ),
-                          ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      listingLoader.listings[index].brand,
+                                      style:
+                                          Theme.of(context).textTheme.subtitle2,
+                                    ),
+                                    Text(
+                                      listingLoader.listings[index].model,
+                                      style:
+                                          Theme.of(context).textTheme.caption,
+                                    ),
+                                    Text(
+                                      '\$${listingLoader.listings[index].price}',
+                                      style:
+                                          Theme.of(context).textTheme.caption,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                          ],
                         ),
-                        const Spacer(),
-                      ],
+                      ),
                     ),
                   );
                 },
