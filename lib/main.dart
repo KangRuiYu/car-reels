@@ -8,7 +8,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   CameraInfos cameraInfos = CameraInfos();
-  await cameraInfos.getCameras();
+  //await cameraInfos.getCameras();
 
   runApp(MyApp(cameraInfos));
 }
