@@ -1,53 +1,88 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
-class ReelRecorder extends StatefulWidget {
+class ReelRecorder extends ChangeNotifier {
+  late CameraController controller;
+  bool get recording => _recording;
+  bool _recording = false;
+
   final CameraDescription _camera;
+  int _timeCount = 1;
+  int _imageCount = 1;
 
-  const ReelRecorder(this._camera);
+  ReelRecorder(this._camera) {
+    _init();
+  }
 
-  @override
-  State<ReelRecorder> createState() => _ReelRecorderState();
-}
+  void _init() async {
+    controller = CameraController(
+      _camera,
+      ResolutionPreset.max,
+      imageFormatGroup: ImageFormatGroup.jpeg,
+    );
 
-class _ReelRecorderState extends State<ReelRecorder> {
-  late CameraController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = CameraController(widget._camera, ResolutionPreset.max);
-    _controller.initialize().then((_) {
-      if (!mounted) {
-        return;
+    try {
+      await controller.initialize();
+    } on CameraException catch (e) {
+      switch (e.code) {
+        case 'CameraAccessDenied':
+          print('User denied camera access.');
+          break;
+        default:
+          print('Handle other errors.');
+          break;
       }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            print('User denied camera access.');
-            break;
-          default:
-            print('Handle other errors.');
-            break;
-        }
-      }
-    });
+    }
+
+    notifyListeners();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (!_controller.value.isInitialized) {
-      return Container();
-    }
-    return CameraPreview(_controller);
+  bool initialized() {
+    return controller.value.isInitialized;
+  }
+
+  void startRecording() async {
+    Directory? storageDir = await getExternalStorageDirectory();
+
+    Uuid uuid = const Uuid();
+    String dirName = uuid.v1();
+    Directory dir = Directory('${storageDir?.path}/$dirName');
+    Directory imageDir = Directory('${dir.path}/images');
+    await imageDir.create(recursive: true);
+
+    File infoFile = File('${dir.path}/info.txt');
+    await infoFile.writeAsString('Tesla\nModel S\n10000');
+
+    await controller.unlockCaptureOrientation();
+    await controller.startImageStream(
+      (CameraImage image) async {
+        if (++_timeCount % 10 == 0) {
+          File imageFile = File(
+            '${imageDir.path}/image$_imageCount.jpeg',
+          );
+          await imageFile.writeAsBytes(image.planes[0].bytes);
+          _imageCount++;
+        }
+      },
+    );
+
+    _recording = true;
+    notifyListeners();
+  }
+
+  void stopRecording() async {
+    await controller.stopImageStream();
+    _recording = false;
+    notifyListeners();
   }
 }

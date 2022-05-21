@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:car_reels/screens/recording_screen.dart';
 import 'package:provider/provider.dart';
 
-
-
 void main() => runApp(const MainScreen());
 
 class MainScreen extends StatelessWidget {
@@ -30,12 +28,14 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
-  List dataList = new List<int>.generate(10, (index) => index); //length of list, index
+  List dataList =
+      new List<int>.generate(10, (index) => index); //length of list, index
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +44,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       body: Column(
         children: [
           Expanded(
-            child: GridView.count(crossAxisCount: 2,
+            child: GridView.count(
+              crossAxisCount: 2,
               children: dataList.map((value) {
                 return Container(
                   alignment: Alignment.center,
@@ -53,65 +54,61 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                    boxShadow: [BoxShadow(
-                      color: Colors.grey.withOpacity(1),
-                      spreadRadius: 4,
-                      blurRadius: 2,
-                      offset: Offset(0, 3),
-                    )],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(1),
+                        spreadRadius: 4,
+                        blurRadius: 2,
+                        offset: Offset(0, 3),
+                      )
+                    ],
                   ),
                   child: Text("Item ${value}"),
                 );
               }).toList(),
             ),
           ),
-
         ],
       ),
-      floatingActionButton:
-        FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return Provider.value(
-                    value: context.read<CameraInfos>(),
-                    child: const RecordingScreen(),
-                  );
-                },
-              ),
-            );
-          },
-          child: const Text(
-              "+",
-            textScaleFactor: 2,
-          ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return Provider.value(
+                  value: context.read<CameraInfos>(),
+                  child: const RecordingScreen(),
+                );
+              },
+            ),
+          );
+        },
+        child: const Text(
+          "+",
+          textScaleFactor: 2,
         ),
-      bottomNavigationBar:
-        BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          notchMargin: 10,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                  onPressed: (){},
-                  icon: Icon(Icons.search)),
-              IconButton(
-                  onPressed: (){},
-                  icon: Icon(Icons.favorite)),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 5.0),),
-              IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.account_balance_wallet),),
-              IconButton(
-                  onPressed: (){},
-                  icon: Icon(Icons.person)),
-            ],
-          ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.0),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.account_balance_wallet),
+            ),
+            IconButton(onPressed: () {}, icon: Icon(Icons.person)),
+          ],
         ),
+      ),
     );
   }
 }
