@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:car_reels/models/camera_infos.dart';
 import 'package:car_reels/screens/main_screen.dart';
+import 'package:car_reels/screens/car.dart';
 
 import 'models/listing_loader.dart';
 
@@ -12,7 +13,8 @@ Future<void> main() async {
   CameraInfos cameraInfos = CameraInfos();
   await cameraInfos.getCameras();
 
-  runApp(MyApp(cameraInfos));
+  //runApp(MyApp(cameraInfos));
+  runApp(carPage());
 }
 
 class MyApp extends StatelessWidget {
