@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:car_reels/models/camera_infos.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:car_reels/models/reel_recorder.dart';
 import 'package:provider/provider.dart';
+
+import '../models/listing_loader.dart';
 
 class RecordingScreen extends StatelessWidget {
   const RecordingScreen();
@@ -86,8 +90,10 @@ class RecordButton extends StatelessWidget {
           shape: const CircleBorder(),
           padding: const EdgeInsets.all(15),
         ),
-        onPressed: () {
-          context.read<ReelRecorder>().stopRecording();
+        onPressed: () async {
+          ListingLoader listingLoader = context.read<ListingLoader>();
+          Directory dir = await context.read<ReelRecorder>().stopRecording();
+          listingLoader.addListing(dir);
         },
       );
     } else {

@@ -14,6 +14,8 @@ class ReelRecorder extends ChangeNotifier {
   int _timeCount = 1;
   int _imageCount = 1;
 
+  Directory _dataDir = Directory('');
+
   ReelRecorder(this._camera) {
     _init();
   }
@@ -66,7 +68,7 @@ class ReelRecorder extends ChangeNotifier {
     await controller.unlockCaptureOrientation();
     await controller.startImageStream(
       (CameraImage image) async {
-        if (++_timeCount % 10 == 0) {
+        if (++_timeCount % 5 == 0) {
           File imageFile = File(
             '${imageDir.path}/image$_imageCount.jpeg',
           );
@@ -77,12 +79,14 @@ class ReelRecorder extends ChangeNotifier {
     );
 
     _recording = true;
+    _dataDir = dir;
     notifyListeners();
   }
 
-  void stopRecording() async {
+  Future<Directory> stopRecording() async {
     await controller.stopImageStream();
     _recording = false;
     notifyListeners();
+    return _dataDir;
   }
 }

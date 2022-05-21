@@ -46,11 +46,11 @@ class _ReelState extends State<Reel> {
             () {
               _scrolledAmount += details.primaryDelta ?? 0;
 
-              if (_scrolledAmount > 10) {
-                _scrolledAmount -= 10;
+              if (_scrolledAmount > 15) {
+                _scrolledAmount -= 15;
                 _imageIndex++;
-              } else if (_scrolledAmount < -10) {
-                _scrolledAmount += 10;
+              } else if (_scrolledAmount < -15) {
+                _scrolledAmount += 15;
                 _imageIndex--;
               }
 
