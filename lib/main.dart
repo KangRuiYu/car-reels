@@ -4,6 +4,8 @@ import 'package:car_reels/models/camera_infos.dart';
 import 'package:car_reels/screens/main_screen.dart';
 import 'package:car_reels/screens/car.dart';
 
+import 'models/listing_loader.dart';
+
 Future<void> main() async {
   // Get cameras
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +24,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider.value(
-      value: _cameraInfos,
+    return MultiProvider(
+      providers: [
+        Provider.value(value: _cameraInfos),
+        ChangeNotifierProvider(
+          create: (context) {
+            ListingLoader l = ListingLoader();
+            l.loadListings();
+            return l;
+          },
+        ),
+      ],
       child: const MaterialApp(
         home: MainScreen(),
       ),
