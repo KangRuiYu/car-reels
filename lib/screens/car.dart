@@ -15,7 +15,7 @@ class carPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue,
-          title: Text('${_listing.brand} ${_listing.model}'),
+          title: Text('${_listing.name}'),
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
@@ -141,9 +141,9 @@ class carPage extends StatelessWidget {
                 // Col 1
                 Expanded(
                   flex: 2,
-                  child: Column(children: const [
+                  child: Column(children: [
                     Text(
-                      '2017',
+                      _listing.year,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
@@ -168,9 +168,9 @@ class carPage extends StatelessWidget {
                 Expanded(
                     flex: 2,
                     child: Column(
-                      children: const [
+                      children: [
                         Text(
-                          '120k',
+                          _listing.mileage,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 20,
@@ -240,7 +240,7 @@ class carPage extends StatelessWidget {
                           flex: 2,
                           child: Column(children: const [
                             Text(
-                              'Trim',
+                              'Emission Type: ',
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 17,
@@ -249,18 +249,81 @@ class carPage extends StatelessWidget {
                           ]),
                         ),
 
-                        // Spacer Col
+                        // Col 2
                         Expanded(
                           flex: 2,
-                          child: Column(children: const []),
+                          child: Column(children: [
+                            Text(
+                              _listing.emissionType,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        // Col 1
+                        Expanded(
+                          flex: 2,
+                          child: Column(children: const [
+                            Text(
+                              'Condition: ',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ]),
                         ),
 
                         // Col 2
                         Expanded(
-                          flex: 5,
+                          flex: 2,
+                          child: Column(children: [
+                            Text(
+                              _listing.condition,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        // Col 1
+                        Expanded(
+                          flex: 2,
                           child: Column(children: const [
                             Text(
-                              'Season O2 Premium',
+                              'MPG: ',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ]),
+                        ),
+                        // Col 2
+                        Expanded(
+                          flex: 2,
+                          child: Column(children: [
+                            Text(
+                              _listing.mpg,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 17,
@@ -269,10 +332,77 @@ class carPage extends StatelessWidget {
                           ]),
                         ),
                         // Spacer Col
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        // Col 1
                         Expanded(
-                          flex: 0,
-                          child: Column(children: const []),
+                          flex: 2,
+                          child: Column(children: const [
+                            Text(
+                              'Engine: ',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ]),
                         ),
+                        // Col 2
+                        Expanded(
+                          flex: 2,
+                          child: Column(children: [
+                            Text(
+                              _listing.engine,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ]),
+                        ),
+                        // Spacer Col
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        // Col 1
+                        Expanded(
+                          flex: 2,
+                          child: Column(children: const [
+                            Text(
+                              'Horsepower: ',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ]),
+                        ),
+
+                        // Col 2
+                        Expanded(
+                          flex: 2,
+                          child: Column(children: [
+                            Text(
+                              _listing.horsePower,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ]),
+                        ),
+                        // Spacer Col
                       ],
                     ),
                   ]),

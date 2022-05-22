@@ -1,4 +1,16 @@
+import 'dart:io';
+
+import 'package:car_reels/screens/recording_screen.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+
+import '../models/camera_infos.dart';
+import '../models/listing.dart';
+import '../models/listing_loader.dart';
+import '../widgets/reel.dart';
 
 class CarForm extends StatefulWidget {
   const CarForm({Key? key}) : super(key: key);
@@ -9,21 +21,72 @@ class CarForm extends StatefulWidget {
 
 class _CarFormState extends State<CarForm> {
   // This widget is the root of your application.
-  List<Widget> _strings = [];
+  final Map<String, TextEditingController> _controllers = {
+    'name': TextEditingController(),
+    'year': TextEditingController(),
+    'price': TextEditingController(),
+    'mileage': TextEditingController(),
+    'emission_type': TextEditingController(),
+    'condition': TextEditingController(),
+    'mpg': TextEditingController(),
+    'engine': TextEditingController(),
+    'horse_power': TextEditingController(),
+  };
+  final String id = const Uuid().v1();
+  bool recorded = false;
+
+  Future<Directory> getDir() async {
+    Directory? storageDir = await getExternalStorageDirectory();
+    String dirName = id;
+    Directory dir = Directory('${storageDir?.path}/$dirName');
+    return dir;
+  }
+
+  Future<void> saveListing() async {
+    Directory? storageDir = await getExternalStorageDirectory();
+
+    String dirName = id;
+    Directory dir = Directory('${storageDir?.path}/$dirName');
+    Directory imageDir = Directory('${dir.path}/images');
+    await imageDir.create(recursive: true);
+
+    File infoFile = File('${dir.path}/info.txt');
+    String str = "";
+
+    str += (_controllers['name']?.text ?? "") + '\n';
+    str += (_controllers['year']?.text ?? "") + '\n';
+    str += (_controllers['price']?.text ?? "") + '\n';
+    str += (_controllers['mileage']?.text ?? "") + '\n';
+    str += (_controllers['emission_type']?.text ?? "") + '\n';
+    str += (_controllers['condition']?.text ?? "") + '\n';
+    str += (_controllers['mpg']?.text ?? "") + '\n';
+    str += (_controllers['engine']?.text ?? "") + '\n';
+    str += (_controllers['horse_power']?.text ?? "");
+
+    await infoFile.writeAsString(str);
+
+    Reference _storageRef = FirebaseStorage.instance.ref().child('$dirName');
+    Reference _infoRef = _storageRef.child('info.txt');
+    _infoRef.putFile(infoFile);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Add Car Listing',
-      home: Scaffold(
+    return SafeArea(
+      child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue,
-          title: const Center(
-            child: Text('Add Car Listing'),
-          ),
+          title: Text('Add Car Listing'),
+          centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              // Add your onPressed code here!
+            onPressed: () async {
+              await saveListing();
+              Directory? storageDir = await getExternalStorageDirectory();
+              String dirName = id;
+              Directory dir = Directory('${storageDir?.path}/$dirName');
+              context.read<ListingLoader>().addListing(dir);
+              Navigator.pop(context);
             },
             backgroundColor: Colors.green,
             child: const Icon(Icons.add)),
@@ -31,71 +94,116 @@ class _CarFormState extends State<CarForm> {
           children: <Widget>[
             Container(
               height: 275,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(
-                        "https://image.made-in-china.com/2f0j00jsTRSMVnLrce/EV-Car.jpg"),
-                    fit: BoxFit.cover),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+              decoration: recorded
+                  ? const BoxDecoration()
+                  : const BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              "https://image.made-in-china.com/2f0j00jsTRSMVnLrce/EV-Car.jpg"),
+                          fit: BoxFit.cover),
+                    ),
+              child: Stack(
+                children: [
+                  recorded
+                      ? FutureBuilder(
+                          future: getDir(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Reel(Listing(snapshot.data as Directory));
+                            } else {
+                              return Container();
+                            }
+                          },
+                        )
+                      : Container(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      // Col 1
-                      Expanded(
-                        flex: 3,
-                        child: Column(children: [
-                          ElevatedButton(
-                              onPressed: () {},
-                              child: const Icon(Icons.camera_alt_outlined)),
-                        ]),
-                      ),
-                      // Col 2
-                      Expanded(
-                        flex: 10,
-                        child: Column(children: const [
-                          SizedBox(
-                            width: 180,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: 'Ex: Tesla Roadster',
-                              ),
-                            ),
-                          ),
-                        ]),
-                      ),
-                      // Col 3
-                      Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          // Col 1
+                          Expanded(
+                            flex: 3,
+                            child: Column(children: [
                               ElevatedButton(
-                                  onPressed: () {},
-                                  child: const Icon(Icons.fullscreen)),
-                            ],
-                          )),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 45,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const <Widget>[
-                      SizedBox(
-                        height: 150.0,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return MultiProvider(
+                                            providers: [
+                                              Provider.value(
+                                                value:
+                                                    context.read<CameraInfos>(),
+                                              ),
+                                              ChangeNotifierProvider.value(
+                                                value: context
+                                                    .read<ListingLoader>(),
+                                              ),
+                                            ],
+                                            child: RecordingScreen(id),
+                                          );
+                                        },
+                                      ),
+                                    ).then(
+                                        (_) => setState(() => recorded = true));
+                                  },
+                                  child: const Icon(Icons.camera_alt_outlined)),
+                            ]),
+                          ),
+                          // Col 2
+                          Expanded(
+                            flex: 10,
+                            child: Column(children: [
+                              SizedBox(
+                                width: 180,
+                                child: TextField(
+                                  controller: _controllers['name'],
+                                  decoration: InputDecoration(
+                                    hintText: 'Ex: Tesla Roadster',
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
+                          // Col 3
+                          Expanded(
+                              flex: 3,
+                              child: Column(
+                                children: [
+                                  ElevatedButton(
+                                      onPressed: () {},
+                                      child: const Icon(Icons.fullscreen)),
+                                ],
+                              )),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 45,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: const <Widget>[
+                          SizedBox(
+                            height: 150.0,
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            recorded
+                ? const SizedBox()
+                : const SizedBox(
+                    height: 20,
+                  ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -153,10 +261,12 @@ class _CarFormState extends State<CarForm> {
                 // Col 1
                 Expanded(
                   flex: 2,
-                  child: Column(children: const [
+                  child: Column(children: [
                     SizedBox(
                       width: 80,
                       child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _controllers['year'],
                         decoration: InputDecoration(
                           hintText: 'Ex: 2018',
                         ),
@@ -167,10 +277,12 @@ class _CarFormState extends State<CarForm> {
                 // Col 2
                 Expanded(
                   flex: 4,
-                  child: Column(children: const [
+                  child: Column(children: [
                     SizedBox(
                       width: 100,
                       child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _controllers['price'],
                         decoration: InputDecoration(
                           hintText: 'Ex: \$58,000',
                         ),
@@ -182,10 +294,11 @@ class _CarFormState extends State<CarForm> {
                 Expanded(
                     flex: 2,
                     child: Column(
-                      children: const [
+                      children: [
                         SizedBox(
                           width: 80,
                           child: TextField(
+                            controller: _controllers['mileage'],
                             decoration: InputDecoration(
                               hintText: 'Ex: 120k',
                             ),
@@ -268,10 +381,11 @@ class _CarFormState extends State<CarForm> {
                         // Col 2
                         Expanded(
                           flex: 5,
-                          child: Column(children: const [
+                          child: Column(children: [
                             SizedBox(
                               width: 140,
                               child: TextField(
+                                controller: _controllers['emission_type'],
                                 decoration: InputDecoration(
                                   hintText: 'Ex: Hybrid',
                                 ),
@@ -302,10 +416,11 @@ class _CarFormState extends State<CarForm> {
                         // Col 2
                         Expanded(
                           flex: 5,
-                          child: Column(children: const [
+                          child: Column(children: [
                             SizedBox(
                               width: 140,
                               child: TextField(
+                                controller: _controllers['condition'],
                                 decoration: InputDecoration(
                                   hintText: 'Ex: Factory New',
                                 ),
@@ -336,10 +451,12 @@ class _CarFormState extends State<CarForm> {
                         // Col 2
                         Expanded(
                           flex: 5,
-                          child: Column(children: const [
+                          child: Column(children: [
                             SizedBox(
                               width: 140,
                               child: TextField(
+                                keyboardType: TextInputType.number,
+                                controller: _controllers['mpg'],
                                 decoration: InputDecoration(
                                   hintText: 'Ex: 28',
                                 ),
@@ -370,10 +487,11 @@ class _CarFormState extends State<CarForm> {
                         // Col 2
                         Expanded(
                           flex: 5,
-                          child: Column(children: const [
+                          child: Column(children: [
                             SizedBox(
                               width: 140,
                               child: TextField(
+                                controller: _controllers['engine'],
                                 decoration: InputDecoration(
                                   hintText: 'Ex: 1000V Battery',
                                 ),
@@ -404,10 +522,11 @@ class _CarFormState extends State<CarForm> {
                         // Col 2
                         Expanded(
                           flex: 5,
-                          child: Column(children: const [
+                          child: Column(children: [
                             SizedBox(
                               width: 140,
                               child: TextField(
+                                controller: _controllers['horse_power'],
                                 decoration: InputDecoration(
                                   hintText: 'Ex: 158-252',
                                 ),

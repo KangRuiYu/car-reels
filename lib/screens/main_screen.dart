@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../models/listing_loader.dart';
 import '../widgets/reel.dart';
+import 'add_car.dart';
 import 'car.dart';
 
 void main() => runApp(const MainScreen());
@@ -109,12 +110,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      listingLoader.listings[index].brand,
+                                      listingLoader.listings[index].name,
                                       style:
                                           Theme.of(context).textTheme.subtitle2,
                                     ),
                                     Text(
-                                      listingLoader.listings[index].model,
+                                      listingLoader.listings[index].year,
                                       style:
                                           Theme.of(context).textTheme.caption,
                                     ),
@@ -154,7 +155,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         value: context.read<ListingLoader>(),
                       ),
                     ],
-                    child: const RecordingScreen(),
+                    child: const CarForm(),
                   );
                 },
               ),
@@ -186,32 +187,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class RecordButton extends StatelessWidget {
-  const RecordButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: const Text('+'),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return Provider.value(
-                value: context.read<CameraInfos>(),
-                child: const RecordingScreen(),
-              );
-            },
-          ),
-        );
-      },
     );
   }
 }

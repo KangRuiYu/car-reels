@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class ReelRecorder extends ChangeNotifier {
@@ -57,24 +56,17 @@ class ReelRecorder extends ChangeNotifier {
     return controller.value.isInitialized;
   }
 
-  void startRecording() async {
+  void startRecording(String id) async {
     Directory? storageDir = await getExternalStorageDirectory();
 
-    Uuid uuid = const Uuid();
-    String dirName = uuid.v1();
+    String dirName = id;
     Directory dir = Directory('${storageDir?.path}/$dirName');
     Directory imageDir = Directory('${dir.path}/images');
     await imageDir.create(recursive: true);
 
-    File infoFile = File('${dir.path}/info.txt');
-    await infoFile.writeAsString('Tesla\nModel S\n10000');
-
     _storageRef = FirebaseStorage.instance.ref().child('$dirName');
-    var _infoRef = _storageRef.child('info.txt');
-    _infoRef.putFile(infoFile);
     var _imageDirRef = _storageRef.child('images');
 
-    await controller.unlockCaptureOrientation();
     await controller.startImageStream(
       (CameraImage image) async {
         if (++_timeCount % 5 == 0) {

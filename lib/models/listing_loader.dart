@@ -50,7 +50,11 @@ class ListingLoader extends ChangeNotifier {
 
     await for (FileSystemEntity dir in storageDir.list()) {
       if (dir is Directory) {
-        listings.add(Listing(dir));
+        if (dir.listSync().isEmpty) {
+          dir.delete(recursive: true);
+        } else {
+          listings.add(Listing(dir));
+        }
       }
     }
 

@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:car_reels/models/reel_recorder.dart';
 import 'package:provider/provider.dart';
 
-import '../models/listing_loader.dart';
-
 class RecordingScreen extends StatelessWidget {
-  const RecordingScreen();
+  final String id;
+
+  const RecordingScreen(this.id);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class RecordingScreen extends StatelessWidget {
                         ),
                       ),
                       Spacer(),
-                      ControlPanel(),
+                      ControlPanel(id),
                     ],
                   ),
                 ],
@@ -61,6 +61,10 @@ class RecordingScreen extends StatelessWidget {
 }
 
 class ControlPanel extends StatelessWidget {
+  final String id;
+
+  const ControlPanel(this.id);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,13 +77,17 @@ class ControlPanel extends StatelessWidget {
       width: double.infinity,
       height: 140.0,
       child: Center(
-        child: RecordButton(),
+        child: RecordButton(id),
       ),
     );
   }
 }
 
 class RecordButton extends StatelessWidget {
+  final String id;
+
+  const RecordButton(this.id);
+
   @override
   Widget build(BuildContext context) {
     if (context.watch<ReelRecorder>().recording) {
@@ -91,9 +99,7 @@ class RecordButton extends StatelessWidget {
           padding: const EdgeInsets.all(15),
         ),
         onPressed: () async {
-          ListingLoader listingLoader = context.read<ListingLoader>();
-          Directory dir = await context.read<ReelRecorder>().stopRecording();
-          listingLoader.addListing(dir);
+          Navigator.pop(context);
         },
       );
     } else {
@@ -105,7 +111,7 @@ class RecordButton extends StatelessWidget {
           padding: const EdgeInsets.all(15),
         ),
         onPressed: () {
-          context.read<ReelRecorder>().startRecording();
+          context.read<ReelRecorder>().startRecording(id);
         },
       );
     }
