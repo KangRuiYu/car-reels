@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 
-class carPage extends StatelessWidget {
-  const carPage({Key? key}) : super(key: key);
+class CarForm extends StatefulWidget {
+  const CarForm({Key? key}) : super(key: key);
+
+  @override
+  State<CarForm> createState() => _CarFormState();
+}
+
+class _CarFormState extends State<CarForm> {
   // This widget is the root of your application.
+  List<Widget> _strings = [];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Car Name',
+      title: 'Add Car Listing',
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue,
           title: const Center(
-            child: Text('Car Screen'),
+            child: Text('Add Car Listing'),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -19,7 +26,7 @@ class carPage extends StatelessWidget {
               // Add your onPressed code here!
             },
             backgroundColor: Colors.green,
-            child: const Icon(Icons.attach_money)),
+            child: const Icon(Icons.add)),
         body: ListView(
           children: <Widget>[
             Container(
@@ -40,17 +47,25 @@ class carPage extends StatelessWidget {
                       // Col 1
                       Expanded(
                         flex: 3,
-                        child: Column(children: const [
-                          CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            minRadius: 25.0,
-                          ),
+                        child: Column(children: [
+                          ElevatedButton(
+                              onPressed: () {},
+                              child: const Icon(Icons.camera_alt_outlined)),
                         ]),
                       ),
                       // Col 2
                       Expanded(
                         flex: 10,
-                        child: Column(children: const []),
+                        child: Column(children: const [
+                          SizedBox(
+                            width: 180,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Ex: Tesla Roadster',
+                              ),
+                            ),
+                          ),
+                        ]),
                       ),
                       // Col 3
                       Expanded(
@@ -139,11 +154,12 @@ class carPage extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Column(children: const [
-                    Text(
-                      '2017',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
+                    SizedBox(
+                      width: 80,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Ex: 2018',
+                        ),
                       ),
                     ),
                   ]),
@@ -152,11 +168,12 @@ class carPage extends StatelessWidget {
                 Expanded(
                   flex: 4,
                   child: Column(children: const [
-                    Text(
-                      '\$25,600',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
+                    SizedBox(
+                      width: 100,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Ex: \$58,000',
+                        ),
                       ),
                     ),
                   ]),
@@ -166,11 +183,12 @@ class carPage extends StatelessWidget {
                     flex: 2,
                     child: Column(
                       children: const [
-                        Text(
-                          '120k',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
+                        SizedBox(
+                          width: 80,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Ex: 120k',
+                            ),
                           ),
                         ),
                       ],
@@ -234,41 +252,168 @@ class carPage extends StatelessWidget {
                       children: <Widget>[
                         // Col 1
                         Expanded(
-                          flex: 2,
+                          flex: 4,
                           child: Column(children: const [
                             Text(
-                              'Trim',
+                              'Emission Type',
                               style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 17,
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
                               ),
                             ),
                           ]),
-                        ),
-
-                        // Spacer Col
-                        Expanded(
-                          flex: 2,
-                          child: Column(children: const []),
                         ),
 
                         // Col 2
                         Expanded(
                           flex: 5,
                           child: Column(children: const [
-                            Text(
-                              'Season O2 Premium',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
+                            SizedBox(
+                              width: 140,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Ex: Hybrid',
+                                ),
                               ),
                             ),
                           ]),
                         ),
-                        // Spacer Col
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        // Col 1
                         Expanded(
-                          flex: 0,
-                          child: Column(children: const []),
+                          flex: 4,
+                          child: Column(children: const [
+                            Text(
+                              'Condition',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ]),
+                        ),
+
+                        // Col 2
+                        Expanded(
+                          flex: 5,
+                          child: Column(children: const [
+                            SizedBox(
+                              width: 140,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Ex: Factory New',
+                                ),
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        // Col 1
+                        Expanded(
+                          flex: 4,
+                          child: Column(children: const [
+                            Text(
+                              'MPG',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ]),
+                        ),
+
+                        // Col 2
+                        Expanded(
+                          flex: 5,
+                          child: Column(children: const [
+                            SizedBox(
+                              width: 140,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Ex: 28',
+                                ),
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        // Col 1
+                        Expanded(
+                          flex: 4,
+                          child: Column(children: const [
+                            Text(
+                              'Engine',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ]),
+                        ),
+
+                        // Col 2
+                        Expanded(
+                          flex: 5,
+                          child: Column(children: const [
+                            SizedBox(
+                              width: 140,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Ex: 1000V Battery',
+                                ),
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        // Col 1
+                        Expanded(
+                          flex: 4,
+                          child: Column(children: const [
+                            Text(
+                              'Horsepower',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ]),
+                        ),
+
+                        // Col 2
+                        Expanded(
+                          flex: 5,
+                          child: Column(children: const [
+                            SizedBox(
+                              width: 140,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Ex: 158-252',
+                                ),
+                              ),
+                            ),
+                          ]),
                         ),
                       ],
                     ),

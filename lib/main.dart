@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:car_reels/models/camera_infos.dart';
 import 'package:car_reels/screens/main_screen.dart';
 import 'package:car_reels/screens/car.dart';
+import 'package:car_reels/screens/add_car.dart';
 
 import 'models/listing_loader.dart';
 
@@ -14,7 +15,7 @@ Future<void> main() async {
   await cameraInfos.getCameras();
 
   //runApp(MyApp(cameraInfos));
-  runApp(carPage());
+  runApp(const CarForm());
 }
 
 class MyApp extends StatelessWidget {
