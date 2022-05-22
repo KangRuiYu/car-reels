@@ -1,18 +1,26 @@
+<<<<<<< HEAD
+=======
+import 'package:car_reels/widgets/reel.dart';
+>>>>>>> b77aac6fdf19905964cc94d3570ad9a5198591fa
 import 'package:flutter/material.dart';
+
+import '../models/listing.dart';
 
 class carPage extends StatelessWidget {
   const carPage({Key? key}) : super(key: key);
   // This widget is the root of your application.
+  final Listing _listing;
+
+  carPage(this._listing);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Car Name',
-      home: Scaffold(
+    return SafeArea(
+      child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue,
-          title: const Center(
-            child: Text('Car Screen'),
-          ),
+          title: Text('${_listing.brand} ${_listing.model}'),
+          centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -23,55 +31,54 @@ class carPage extends StatelessWidget {
         body: ListView(
           children: <Widget>[
             Container(
-              height: 275,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(
-                        "https://image.made-in-china.com/2f0j00jsTRSMVnLrce/EV-Car.jpg"),
-                    fit: BoxFit.cover),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: Stack(
+                children: [
+                  Reel(_listing),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      // Col 1
-                      Expanded(
-                        flex: 3,
-                        child: Column(children: const [
-                          CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            minRadius: 25.0,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          // Col 1
+                          Expanded(
+                            flex: 3,
+                            child: Column(children: const [
+                              Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  minRadius: 25.0,
+                                ),
+                              ),
+                            ]),
                           ),
-                        ]),
+                          // Col 2
+                          Expanded(
+                            flex: 10,
+                            child: Column(children: const []),
+                          ),
+                          // Col 3
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              children: [
+                                ElevatedButton(
+                                    onPressed: () {},
+                                    child: const Icon(Icons.fullscreen)),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      // Col 2
-                      Expanded(
-                        flex: 10,
-                        child: Column(children: const []),
-                      ),
-                      // Col 3
-                      Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              ElevatedButton(
-                                  onPressed: () {},
-                                  child: const Icon(Icons.fullscreen)),
-                            ],
-                          )),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 45,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const <Widget>[
-                      SizedBox(
-                        height: 150.0,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: const <Widget>[
+                          SizedBox(
+                            height: 150.0,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -151,10 +158,10 @@ class carPage extends StatelessWidget {
                 // Col 2
                 Expanded(
                   flex: 4,
-                  child: Column(children: const [
+                  child: Column(children: [
                     Text(
-                      '\$25,600',
-                      style: TextStyle(
+                      '\$${_listing.price}',
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 20,
                       ),
