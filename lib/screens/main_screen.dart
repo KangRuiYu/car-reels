@@ -30,6 +30,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   List dataList =
       new List<int>.generate(10, (index) => index); //length of list, index
+  String city = "City";//["Irvine", "San Francisco", "New York", "Chicago", "Seattle", "Aldwin Park"];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -41,35 +42,110 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(title: const Text('Car Reels')),
-      body: Column(
-        children: [
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: dataList.map((value) {
-                return Container(
-                  alignment: Alignment.center,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(1),
-                        spreadRadius: 4,
-                        blurRadius: 2,
-                        offset: Offset(0, 3),
-                      )
-                    ],
-                  ),
-                  child: Text("Item ${value}"),
-                );
-              }).toList(),
+      body:
+        Column(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: DropdownButton(
+                  value: city,
+                  items: <String>["City","Irvine", "San Francisco", "New York", "Chicago", "Seattle", "Aldwin Park"]
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }
+                  ).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      city = newValue!;
+                    });
+                  },),
+              )
             ),
-          ),
-        ],
-      ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Text("CarReels",
+                  textAlign: TextAlign.left,
+                  textScaleFactor: 2,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width - 25,
+                height: 44,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                  ),
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: TextField(
+
+                      decoration: InputDecoration(
+                        isDense: false,
+                        contentPadding: EdgeInsets.only(left: 5),
+                        filled: true,
+                        fillColor: Colors.white,
+                          prefixIcon: IconButton(
+                          onPressed: (){},
+                          icon: Icon(Icons.search),
+                            color: Colors.blue,
+                            iconSize: 25,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(180)
+                        ),
+                        hintText: 'Enter a search term',
+                        hintStyle: TextStyle(
+                           fontSize: 25
+                          )
+                        ),
+                      ),
+
+                  ),
+                ),
+              ),
+            ),
+
+
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                children: dataList.map((value) {
+                  return Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(1),
+                          spreadRadius: 4,
+                          blurRadius: 2,
+                          offset: Offset(0, 3),
+                        )
+                      ],
+                    ),
+                    child: Text("Item ${value}"),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
