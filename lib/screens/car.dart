@@ -141,15 +141,17 @@ class carPage extends StatelessWidget {
                 // Col 1
                 Expanded(
                   flex: 2,
-                  child: Column(children: [
-                    Text(
-                      _listing.year,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
+                  child: Column(
+                    children: [
+                      Text(
+                        _listing.year,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                  ]),
+                    ],
+                  ),
                 ),
                 // Col 2
                 Expanded(
@@ -171,7 +173,7 @@ class carPage extends StatelessWidget {
                       children: [
                         Text(
                           _listing.mileage,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 20,
                           ),

@@ -54,8 +54,8 @@ class _CarFormState extends State<CarForm> {
     String str = "";
 
     str += (_controllers['name']?.text ?? "") + '\n';
-    str += (_controllers['year']?.text ?? "") + '\n';
     str += (_controllers['price']?.text ?? "") + '\n';
+    str += (_controllers['year']?.text ?? "") + '\n';
     str += (_controllers['mileage']?.text ?? "") + '\n';
     str += (_controllers['emission_type']?.text ?? "") + '\n';
     str += (_controllers['condition']?.text ?? "") + '\n';
