@@ -38,9 +38,6 @@ class ListingLoader extends ChangeNotifier {
 
         ListResult innerListResults = await prefix.child('images').listAll();
 
-        print("THIS IS HERE SO LISTEN");
-        print(innerListResults.items);
-
         for (Reference image in innerListResults.items) {
           File imageFileToWrite = File(
             '${storageDir.path}/${prefix.name}/images/${image.name}',
@@ -59,7 +56,6 @@ class ListingLoader extends ChangeNotifier {
 
     await Future.wait(downloadTasks);
     _doneLoading = true;
-    print('FINISHED HERE SO LISTEN adklfjlaskdjf;laksjfd;alksjdf;ajsf');
     notifyListeners();
   }
 
