@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "246309926426",
+    "firebase_url": "https://car-reels-default-rtdb.firebaseio.com",
+    "project_id": "car-reels",
+    "storage_bucket": "car-reels.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246309926426:android:78e46dac0c3d5f981903a3",
+        "android_client_info": {
+          "package_name": "com.example.car_reels"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246309926426-ptoitlcgh62ob680k6tdlcvb7k3uo8uj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ-MzdnrMxazztN5Au7-gC3VewHI7at74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246309926426-ptoitlcgh62ob680k6tdlcvb7k3uo8uj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

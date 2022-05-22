@@ -4,6 +4,8 @@ import 'package:car_reels/models/camera_infos.dart';
 import 'package:car_reels/screens/main_screen.dart';
 
 import 'models/listing_loader.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:car_reels/firebase_options.dart';
 
 Future<void> main() async {
   // Get cameras
@@ -11,6 +13,10 @@ Future<void> main() async {
 
   CameraInfos cameraInfos = CameraInfos();
   await cameraInfos.getCameras();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(MyApp(cameraInfos));
 }

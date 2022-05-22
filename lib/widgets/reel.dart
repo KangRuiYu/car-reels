@@ -38,6 +38,7 @@ class _ReelState extends State<Reel> {
 
   @override
   Widget build(BuildContext context) {
+    print(_imageFiles);
     if (_imagesLoaded) {
       return GestureDetector(
         child: _imageFiles[_imageIndex],
