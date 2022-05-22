@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class ReelRecorder extends ChangeNotifier {
   late CameraController controller;
@@ -15,6 +17,8 @@ class ReelRecorder extends ChangeNotifier {
   int _imageCount = 1;
 
   Directory _dataDir = Directory('');
+
+  var _storageRef;
 
   ReelRecorder(this._camera) {
     _init();
@@ -65,6 +69,11 @@ class ReelRecorder extends ChangeNotifier {
     File infoFile = File('${dir.path}/info.txt');
     await infoFile.writeAsString('Tesla\nModel S\n10000');
 
+    _storageRef = FirebaseStorage.instance.ref().child('$dirName');
+    var _infoRef = _storageRef.child('info.txt');
+    _infoRef.putFile(infoFile);
+    var _imageDirRef = _storageRef.child('images');
+
     await controller.unlockCaptureOrientation();
     await controller.startImageStream(
       (CameraImage image) async {
@@ -73,6 +82,9 @@ class ReelRecorder extends ChangeNotifier {
             '${imageDir.path}/image$_imageCount.jpeg',
           );
           await imageFile.writeAsBytes(image.planes[0].bytes);
+          _imageDirRef.child('image$_imageCount.jpeg').putFile(
+                imageFile,
+              );
           _imageCount++;
         }
       },

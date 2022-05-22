@@ -31,7 +31,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   List dataList =
       new List<int>.generate(10, (index) => index); //length of list, index
-  String city = "City";//["Irvine", "San Francisco", "New York", "Chicago", "Seattle", "Aldwin Park"];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -41,6 +40,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return GestureDetector(
       onTap: (){FocusManager.instance.primaryFocus?.unfocus();},
       child: Scaffold(
@@ -123,6 +123,20 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
               Expanded(
                 child: GridView.count(
+=======
+    ListingLoader listingLoader = context.watch<ListingLoader>();
+
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        appBar: AppBar(title: const Text('Car Reels')),
+        body: Column(
+          children: [
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(8.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+>>>>>>> 85876b9b8f7eaecbb2c5e413426c8ee347505fcf
                   crossAxisCount: 2,
                   children: dataList.map((value) {
                     return Container(
