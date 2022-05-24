@@ -1,16 +1,7 @@
-# car_reels
+# CarReels (VenusHacks 2022 Submission)
+# DevPost: https://devpost.com/software/car-reels-puo2tf
 
-A new Flutter project.
+CarReels is a mobile e-commerce app designed to make car buying easier and accessible.
+It features 3D Video Scrolling and a search bar.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://user-images.githubusercontent.com/65209258/169927135-5b5db19a-3c77-4262-afd3-a5d7b285230b.png)
